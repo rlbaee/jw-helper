@@ -1,0 +1,292 @@
+{
+  "people": [
+    {
+      "id": 1,
+      "full_name": "Gaabriel Ponomarjov",
+      "short_name": "Gaabriel P.",
+      "roles": [
+        "Heli",
+        "Lugeja",
+        "mikr.1+lava",
+        "mikr.2"
+      ],
+      "unavailable_dates": [
+        "2026-07-11",
+        "2026-07-12",
+        "2026-07-18",
+        "2026-07-19"
+      ],
+      "assignment_counts": {
+        "Heli": 2,
+        "U.teenind.": 0,
+        "S.teenind.": 0,
+        "Lugeja": 2,
+        "Juhataja": 0,
+        "mikr.1+lava": 1,
+        "mikr.2": 1
+      }
+    },
+    {
+      "id": 2,
+      "full_name": "Aleksander Kais",
+      "short_name": "Aleksander K.",
+      "roles": [
+        "Heli",
+        "U.teenind.",
+        "S.teenind.",
+        "Lugeja",
+        "Juhataja",
+        "mikr.1+lava",
+        "mikr.2"
+      ],
+      "unavailable_dates": [],
+      "assignment_counts": {
+        "Heli": 2,
+        "U.teenind.": 1,
+        "S.teenind.": 2,
+        "Lugeja": 1,
+        "Juhataja": 2,
+        "mikr.1+lava": 1,
+        "mikr.2": 0
+      }
+    },
+    {
+      "id": 3,
+      "full_name": "Aleksei Ponomarjov",
+      "short_name": "Aleksei P.",
+      "roles": [
+        "U.teenind.",
+        "S.teenind.",
+        "Juhataja",
+        "mikr.1+lava",
+        "mikr.2"
+      ],
+      "unavailable_dates": [],
+      "assignment_counts": {
+        "Heli": 0,
+        "U.teenind.": 1,
+        "S.teenind.": 1,
+        "Lugeja": 0,
+        "Juhataja": 2,
+        "mikr.1+lava": 1,
+        "mikr.2": 1
+      }
+    },
+    {
+      "id": 4,
+      "full_name": "Kristjan Pellja",
+      "short_name": "Kristjan P.",
+      "roles": [
+        "Heli",
+        "U.teenind.",
+        "S.teenind.",
+        "Juhataja",
+        "mikr.1+lava",
+        "mikr.2",
+        "Lugeja"
+      ],
+      "unavailable_dates": [],
+      "assignment_counts": {
+        "Heli": 2,
+        "U.teenind.": 1,
+        "S.teenind.": 1,
+        "Lugeja": 1,
+        "Juhataja": 1,
+        "mikr.1+lava": 1,
+        "mikr.2": 1
+      }
+    },
+    {
+      "id": 5,
+      "full_name": "Ardi Onno",
+      "short_name": "Ardi O.",
+      "roles": [
+        "U.teenind.",
+        "S.teenind.",
+        "Lugeja",
+        "Juhataja"
+      ],
+      "unavailable_dates": [],
+      "assignment_counts": {
+        "Heli": 0,
+        "U.teenind.": 1,
+        "S.teenind.": 1,
+        "Lugeja": 1,
+        "Juhataja": 2,
+        "mikr.1+lava": 0,
+        "mikr.2": 0
+      }
+    },
+    {
+      "id": 6,
+      "full_name": "Evgeny Shelukhin",
+      "short_name": "Evgeny S.",
+      "roles": [
+        "mikr.1+lava",
+        "mikr.2",
+        "U.teenind.",
+        "S.teenind."
+      ],
+      "unavailable_dates": [],
+      "assignment_counts": {
+        "Heli": 0,
+        "U.teenind.": 1,
+        "S.teenind.": 1,
+        "Lugeja": 0,
+        "Juhataja": 0,
+        "mikr.1+lava": 1,
+        "mikr.2": 1
+      }
+    },
+    {
+      "id": 7,
+      "full_name": "Ilja Lukijanov",
+      "short_name": "Ilja L.",
+      "roles": [
+        "Heli",
+        "Lugeja",
+        "mikr.1+lava",
+        "mikr.2"
+      ],
+      "unavailable_dates": [],
+      "assignment_counts": {
+        "Heli": 1,
+        "U.teenind.": 0,
+        "S.teenind.": 0,
+        "Lugeja": 1,
+        "Juhataja": 0,
+        "mikr.1+lava": 1,
+        "mikr.2": 1
+      }
+    },
+    {
+      "id": 8,
+      "full_name": "Lasse Ålander",
+      "short_name": "Lasse Å.",
+      "roles": [
+        "U.teenind.",
+        "S.teenind.",
+        "Juhataja",
+        "mikr.1+lava",
+        "mikr.2"
+      ],
+      "unavailable_dates": [],
+      "assignment_counts": {
+        "Heli": 0,
+        "U.teenind.": 1,
+        "S.teenind.": 1,
+        "Lugeja": 0,
+        "Juhataja": 1,
+        "mikr.1+lava": 1,
+        "mikr.2": 1
+      }
+    },
+    {
+      "id": 9,
+      "full_name": "Margus Older",
+      "short_name": "Margus O.",
+      "roles": [
+        "U.teenind.",
+        "S.teenind.",
+        "Lugeja",
+        "mikr.1+lava",
+        "mikr.2"
+      ],
+      "unavailable_dates": [],
+      "assignment_counts": {
+        "Heli": 0,
+        "U.teenind.": 1,
+        "S.teenind.": 1,
+        "Lugeja": 1,
+        "Juhataja": 0,
+        "mikr.1+lava": 1,
+        "mikr.2": 1
+      }
+    },
+    {
+      "id": 10,
+      "full_name": "Reigo Peeduli",
+      "short_name": "Reigo P.",
+      "roles": [
+        "Heli",
+        "U.teenind.",
+        "S.teenind.",
+        "Lugeja",
+        "Juhataja",
+        "mikr.1+lava",
+        "mikr.2"
+      ],
+      "unavailable_dates": [],
+      "assignment_counts": {
+        "Heli": 1,
+        "U.teenind.": 1,
+        "S.teenind.": 1,
+        "Lugeja": 1,
+        "Juhataja": 1,
+        "mikr.1+lava": 0,
+        "mikr.2": 0
+      }
+    },
+    {
+      "id": 11,
+      "full_name": "Roman Trenin",
+      "short_name": "Roman T.",
+      "roles": [
+        "Heli",
+        "U.teenind.",
+        "S.teenind.",
+        "mikr.1+lava",
+        "mikr.2"
+      ],
+      "unavailable_dates": [],
+      "assignment_counts": {
+        "Heli": 1,
+        "U.teenind.": 1,
+        "S.teenind.": 0,
+        "Lugeja": 0,
+        "Juhataja": 0,
+        "mikr.1+lava": 1,
+        "mikr.2": 0
+      }
+    },
+    {
+      "id": 12,
+      "full_name": "Adriel Ponomarjov",
+      "short_name": "Adriel P.",
+      "roles": [
+        "Lugeja",
+        "mikr.1+lava",
+        "mikr.2"
+      ],
+      "unavailable_dates": [],
+      "assignment_counts": {
+        "Heli": 0,
+        "U.teenind.": 0,
+        "S.teenind.": 0,
+        "Lugeja": 1,
+        "Juhataja": 0,
+        "mikr.1+lava": 0,
+        "mikr.2": 1
+      }
+    },
+    {
+      "id": 13,
+      "full_name": "Ilja Trenin",
+      "short_name": "Ilja T.",
+      "roles": [
+        "mikr.1+lava",
+        "mikr.2"
+      ],
+      "unavailable_dates": [],
+      "assignment_counts": {
+        "Heli": 0,
+        "U.teenind.": 0,
+        "S.teenind.": 0,
+        "Lugeja": 0,
+        "Juhataja": 0,
+        "mikr.1+lava": 0,
+        "mikr.2": 1
+      }
+    }
+  ]
+}

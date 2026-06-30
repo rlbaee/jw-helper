@@ -1,0 +1,10 @@
+{
+    "people": [
+        {
+            "id": 1,
+            "full_name": "Gaabriel Ponomarjov",
+            "short_name": "Gaabriel P.",
+            "roles": ["Heli", "Saaliteenindaja", "Lugeja", "Mikr1+lava", "Mikr2"]
+        }
+    ]
+}

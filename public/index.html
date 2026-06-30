@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JW Helper — Inimesed</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <h1>JW Helper</h1>
+      <p>Vendade ja nende ülesannete haldus</p>
+    </div>
+    <nav>
+      <a href="index.html" class="active">Inimesed</a>
+      <a href="schedule.html">Ajakava</a>
+    </nav>
+  </header>
+
+  <div class="panel">
+    <h2>Lisa inimene</h2>
+    <div class="row">
+      <div>
+        <label for="fullName">Täisnimi</label>
+        <input type="text" id="fullName" placeholder="nt Gaabriel Ponomarjov">
+      </div>
+      <div>
+        <label for="shortName">Lühinimi</label>
+        <input type="text" id="shortName" placeholder="nt Gaabriel P.">
+      </div>
+    </div>
+
+    <div class="roles-field">
+      <label>Ülesanded (rollid)</label>
+      <div class="roles-chip-input" id="rolesChipInput">
+        <input type="text" id="roleEntry" placeholder="vajuta allolevatel rollidel...">
+      </div>
+      <div class="suggestions" id="suggestions"></div>
+      <p class="hint">Klõpsa rollidel, et need lisada või eemaldada.</p>
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="addBtn">Lisa inimene</button>
+      <button class="secondary" id="clearFormBtn">Tühjenda väli</button>
+    </div>
+    <div class="status" id="formStatus"></div>
+  </div>
+
+  <div class="panel">
+    <div class="list-header">
+      <h2>Inimeste nimekiri (<span id="countLabel">0</span>)</h2>
+    </div>
+    <table id="peopleTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Täisnimi</th>
+          <th>Lühinimi</th>
+          <th>Rollid</th>
+          <th>Mittesaadav</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="peopleBody"></tbody>
+    </table>
+    <div class="empty-state" id="emptyState">Veel ühtegi inimest pole lisatud.</div>
+  </div>
+
+</div>
+
+<div class="modal-backdrop" id="unavailModal">
+  <div class="modal">
+    <h3 id="unavailModalTitle">Mittesaadavad kuupäevad</h3>
+    <div class="row" style="grid-template-columns:1fr auto;align-items:end;">
+      <div>
+        <label for="unavailDateInput">Lisa kuupäev</label>
+        <input type="date" id="unavailDateInput">
+      </div>
+      <button class="secondary" id="addUnavailDateBtn">Lisa</button>
+    </div>
+    <div class="date-chip-list" id="unavailDateList"></div>
+    <div class="actions">
+      <button class="primary" id="closeUnavailModal">Valmis</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const ROLES = ["Heli", "U.teenind.", "S.teenind.", "Lugeja", "Juhataja", "mikr.1+lava", "mikr.2"];
+
+let people = [];
+let currentRoles = [];
+let editingUnavailPersonId = null;
+
+async function api(path, options) {
+  const res = await fetch(path, {
+    headers: { 'Content-Type': 'application/json' },
+    ...options
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: 'Tundmatu viga' }));
+    throw new Error(err.error || 'Viga');
+  }
+  return res.json();
+}
+
+async function loadPeople() {
+  const data = await api('/api/people');
+  people = data.people;
+  renderTable();
+}
+
+// --- roles chip input ---
+const rolesChipInput = document.getElementById('rolesChipInput');
+const suggestionsEl = document.getElementById('suggestions');
+
+function renderRolePicker() {
+  suggestionsEl.innerHTML = '';
+  ROLES.forEach(r => {
+    const btn = document.createElement('button');
+    btn.className = 'suggestion-btn' + (currentRoles.includes(r) ? ' active' : '');
+    btn.type = 'button';
+    btn.textContent = (currentRoles.includes(r) ? '✓ ' : '+ ') + r;
+    btn.addEventListener('click', () => {
+      if (currentRoles.includes(r)) {
+        currentRoles = currentRoles.filter(x => x !== r);
+      } else {
+        currentRoles.push(r);
+      }
+      renderRolePicker();
+      renderChips();
+    });
+    suggestionsEl.appendChild(btn);
+  });
+}
+
+function renderChips() {
+  Array.from(rolesChipInput.querySelectorAll('.chip')).forEach(c => c.remove());
+  const entryInput = document.getElementById('roleEntry');
+  currentRoles.forEach(r => {
+    const chip = document.createElement('span');
+    chip.className = 'chip';
+    chip.textContent = r;
+    const x = document.createElement('button');
+    x.type = 'button';
+    x.textContent = '×';
+    x.addEventListener('click', () => {
+      currentRoles = currentRoles.filter(x => x !== r);
+      renderChips();
+      renderRolePicker();
+    });
+    chip.appendChild(x);
+    rolesChipInput.insertBefore(chip, entryInput);
+  });
+}
+
+document.getElementById('roleEntry').style.display = 'none'; // pure click-to-pick UX, keep input hidden but present for layout
+
+// --- form actions ---
+const fullNameEl = document.getElementById('fullName');
+const shortNameEl = document.getElementById('shortName');
+const formStatus = document.getElementById('formStatus');
+
+function setStatus(msg, isError) {
+  formStatus.textContent = msg;
+  formStatus.className = 'status' + (isError ? ' err' : '');
+}
+
+document.getElementById('addBtn').addEventListener('click', async () => {
+  const full_name = fullNameEl.value.trim();
+  const short_name = shortNameEl.value.trim();
+
+  if (!full_name) {
+    setStatus('Täisnimi on kohustuslik.', true);
+    return;
+  }
+  if (currentRoles.length === 0) {
+    setStatus('Vali vähemalt üks roll.', true);
+    return;
+  }
+
+  try {
+    const person = await api('/api/people', {
+      method: 'POST',
+      body: JSON.stringify({ full_name, short_name, roles: currentRoles })
+    });
+    fullNameEl.value = '';
+    shortNameEl.value = '';
+    currentRoles = [];
+    renderChips();
+    renderRolePicker();
+    setStatus(`Lisatud: ${person.full_name}`, false);
+    await loadPeople();
+    fullNameEl.focus();
+  } catch (e) {
+    setStatus(e.message, true);
+  }
+});
+
+document.getElementById('clearFormBtn').addEventListener('click', () => {
+  fullNameEl.value = '';
+  shortNameEl.value = '';
+  currentRoles = [];
+  renderChips();
+  renderRolePicker();
+  setStatus('', false);
+});
+
+// --- table rendering ---
+const peopleBody = document.getElementById('peopleBody');
+const emptyState = document.getElementById('emptyState');
+const countLabel = document.getElementById('countLabel');
+const peopleTable = document.getElementById('peopleTable');
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function renderTable() {
+  peopleBody.innerHTML = '';
+  countLabel.textContent = people.length;
+
+  if (people.length === 0) {
+    peopleTable.style.display = 'none';
+    emptyState.style.display = 'block';
+    return;
+  }
+  peopleTable.style.display = 'table';
+  emptyState.style.display = 'none';
+
+  people.forEach(p => {
+    const unavailCount = (p.unavailable_dates || []).length;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="id-cell">${p.id}</td>
+      <td>${escapeHtml(p.full_name)}</td>
+      <td>${escapeHtml(p.short_name)}</td>
+      <td class="roles-cell">${p.roles.map(escapeHtml).join(', ')}</td>
+      <td class="roles-cell">${unavailCount ? unavailCount + ' kuupäeva' : '—'}</td>
+      <td class="row-actions">
+        <button class="unavail" data-id="${p.id}">kuupäevad</button>
+        <button class="del" data-id="${p.id}">eemalda</button>
+      </td>
+    `;
+    peopleBody.appendChild(tr);
+  });
+
+  peopleBody.querySelectorAll('.del').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      const id = parseInt(e.target.dataset.id, 10);
+      const person = people.find(p => p.id === id);
+      if (!confirm(`Eemaldada ${person.full_name}?`)) return;
+      await api(`/api/people/${id}`, { method: 'DELETE' });
+      await loadPeople();
+    });
+  });
+
+  peopleBody.querySelectorAll('.unavail').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const id = parseInt(e.target.dataset.id, 10);
+      openUnavailModal(id);
+    });
+  });
+}
+
+// --- unavailable dates modal ---
+const unavailModal = document.getElementById('unavailModal');
+const unavailModalTitle = document.getElementById('unavailModalTitle');
+const unavailDateList = document.getElementById('unavailDateList');
+const unavailDateInput = document.getElementById('unavailDateInput');
+
+function openUnavailModal(personId) {
+  editingUnavailPersonId = personId;
+  const person = people.find(p => p.id === personId);
+  unavailModalTitle.textContent = `Mittesaadavad kuupäevad — ${person.full_name}`;
+  renderUnavailList(person);
+  unavailModal.classList.add('show');
+}
+
+function renderUnavailList(person) {
+  unavailDateList.innerHTML = '';
+  (person.unavailable_dates || []).sort().forEach(d => {
+    const chip = document.createElement('span');
+    chip.className = 'chip';
+    chip.textContent = d;
+    const x = document.createElement('button');
+    x.type = 'button';
+    x.textContent = '×';
+    x.addEventListener('click', async () => {
+      person.unavailable_dates = person.unavailable_dates.filter(x => x !== d);
+      await api(`/api/people/${person.id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ unavailable_dates: person.unavailable_dates })
+      });
+      renderUnavailList(person);
+      renderTable();
+    });
+    chip.appendChild(x);
+    unavailDateList.appendChild(chip);
+  });
+}
+
+document.getElementById('addUnavailDateBtn').addEventListener('click', async () => {
+  if (!unavailDateInput.value) return;
+  const person = people.find(p => p.id === editingUnavailPersonId);
+  person.unavailable_dates = person.unavailable_dates || [];
+  if (!person.unavailable_dates.includes(unavailDateInput.value)) {
+    person.unavailable_dates.push(unavailDateInput.value);
+    await api(`/api/people/${person.id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ unavailable_dates: person.unavailable_dates })
+    });
+  }
+  unavailDateInput.value = '';
+  renderUnavailList(person);
+  renderTable();
+});
+
+document.getElementById('closeUnavailModal').addEventListener('click', () => {
+  unavailModal.classList.remove('show');
+  editingUnavailPersonId = null;
+});
+
+// init
+renderRolePicker();
+renderChips();
+loadPeople();
+</script>
+</body>
+</html>
