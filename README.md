@@ -8,6 +8,10 @@
 - choose the availability of those brothers
 - automatically and fairly distribute tasks for them
 
+### Tech stack
+For now, app will be deployed on GitHub pages. Data will not be stored.
+
+
 ### Currently available features: 
 > stay tuned:)
 
