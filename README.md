@@ -11,7 +11,6 @@
 ### Tech stack
 For now, app will be deployed on GitHub pages. Data will not be stored.
 
-
 ### Currently available features: 
 > stay tuned:)
 

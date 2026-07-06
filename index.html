@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="et-EE">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuulutustöökoosolekud · JW Library</title>
+    <link rel="stylesheet" href="assets/css/index.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="brand">
+                <span class="brand-icon" aria-hidden="true">📘</span>
+                <span class="brand-name">JW Library</span>
+            </div>
+            <nav aria-label="Peamenüü">
+                <a href="index.html" class="nav-link nav-link--active">Kuulutustöökoosolekud</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page">
+        <section class="hero">
+            <h1>Kuulutustöökoosolekud</h1>
+            <p class="hero-subtitle">Vaata järgmisi koosolekuid, kontrolli saadavust ja jaga ülesanded ära.</p>
+            <div class="meeting-days">
+                <span class="day-chip">Esmaspäev</span>
+                <span class="day-chip">Kolmapäev <span class="zoom-tag">Zoom</span></span>
+                <span class="day-chip">Laupäev</span>
+            </div>
+        </section>
+
+        <section class="upcoming" aria-labelledby="upcoming-title">
+            <h2 id="upcoming-title">Järgmised koosolekud</h2>
+            <div class="upcoming-meetings" id="upcoming-meetings"></div>
+        </section>
+
+        <section class="plan-section" aria-labelledby="plan-title">
+            <div class="plan-section__head">
+                <div>
+                    <h2 id="plan-title">Koosolekute plaan</h2>
+                    <p class="plan-section__hint">Koostab järgmiste koosolekute jaotuse saadavuse järgi</p>
+                </div>
+            </div>
+            <div class="month-picker">
+                <label class="month-picker__label" for="schedule-month">Kuu</label>
+                <input type="month" id="schedule-month" class="input month-picker__input">
+            </div>
+            <div class="plan-actions">
+                <button type="button" class="btn btn--primary" id="generate-plan">Koosta plaan</button>
+            </div>
+            <div class="plan-output plan-output--empty" id="plan-output">
+                <p class="plan-placeholder">Vajuta „Koosta plaan“, et luua jaotus.</p>
+            </div>
+        </section>
+
+        <section class="people-section" aria-labelledby="people-title">
+            <div class="people-section__head">
+                <h2 id="people-title">Vennad</h2>
+                <p class="people-count" id="people-count"></p>
+            </div>
+            <div class="list" id="people-list"></div>
+        </section>
+    </main>
+
+    <script src="assets/js/index.js"></script>
+</body>
+</html>
